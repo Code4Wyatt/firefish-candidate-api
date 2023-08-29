@@ -123,5 +123,28 @@ namespace firefish_candidate_api.Controllers
                 }
             }
         }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteCandidate(int id) 
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("DELETE FROM Candidate WHERE ID = @ID", connection))
+                {
+                    command.Parameters.AddWithValue("@ID", id);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        return Ok("Candidate deleted successfully!");
+                    }
+                    else
+                    {
+                        return NotFound("Candidate with that ID does not exist.");
+                    }
+                }
+            }
+        }
     }
 }
