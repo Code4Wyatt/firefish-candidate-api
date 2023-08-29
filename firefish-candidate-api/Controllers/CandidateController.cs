@@ -88,6 +88,40 @@ namespace firefish_candidate_api.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult CreateCandidate([FromBody] Candidate newCandidate) 
+        {
+            using (var connection = new SqlConnection(connectionString)) 
+            {
+                connection.Open();
+                using (var command = new SqlCommand("INSERT INTO Candidate (FirstName, Surname, DateOfBirth, Address1, Town, Country, PostCode, PhoneHome, PhoneMobile, PhoneWork, CreatedDate, UpdatedDate) VALUES (@FirstName, @Surname, @DateOfBirth, @Address1, @Town, @Country, @PostCode, @PhoneHome, @PhoneMobile, @PhoneWork, @CreatedDate, @UpdatedDate)", connection))
+                {
+              
+                    command.Parameters.AddWithValue("@FirstName", newCandidate.FirstName);
+                    command.Parameters.AddWithValue("@Surname", newCandidate.Surname);
+                    command.Parameters.AddWithValue("@DateOfBirth", newCandidate.DateOfBirth);
+                    command.Parameters.AddWithValue("@Address1", newCandidate.Address1);
+                    command.Parameters.AddWithValue("@Town", newCandidate.Town);
+                    command.Parameters.AddWithValue("@Country", newCandidate.Country);
+                    command.Parameters.AddWithValue("@PostCode", newCandidate.PostCode);
+                    command.Parameters.AddWithValue("@PhoneHome", newCandidate.PhoneHome);
+                    command.Parameters.AddWithValue("@PhoneMobile", newCandidate.PhoneMobile);
+                    command.Parameters.AddWithValue("@PhoneWork", newCandidate.PhoneWork);
+                    command.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+                    command.Parameters.AddWithValue("@UpdatedDate", DateTime.Now);
 
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected > 0) 
+                    {
+                        return Ok("Candidate created successfully! :)");
+                    }
+                    else
+                    {
+                        return BadRequest("Failed to create the candidate, check all fields are completed.");
+                    }
+                }
+            }
+        }
     }
 }
