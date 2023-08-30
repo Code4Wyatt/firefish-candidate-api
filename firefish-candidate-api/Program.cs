@@ -8,6 +8,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton(x => builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowMyOrigin",
+        builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod());
+});
 
 var app = builder.Build();
 
@@ -21,6 +26,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors("AllowMyOrigin");
 
 app.MapControllers();
 
