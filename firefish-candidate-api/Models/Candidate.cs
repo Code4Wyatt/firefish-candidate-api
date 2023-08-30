@@ -26,6 +26,6 @@
         public DateTime CreatedDate { get; set; }
 
         public DateTime UpdatedDate { get; set; }
-
+        public List<Skill> Skills { get; internal set; }
     }
 }
